@@ -10,6 +10,7 @@ contract AlmacenTech246872 {
         string modelo;
         uint256 precio;
     }
+    
 
     Componente[] public componentes;
 
