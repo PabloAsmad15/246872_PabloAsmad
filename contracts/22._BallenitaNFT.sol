@@ -25,16 +25,14 @@ contract BallenitaNFT is ERC721, Ownable {
 
     mapping (uint256 => Poster) private posters;
 
-    // Se estandarizaron todos los parámetros con el prefijo "_"
-    function mint(address _to, string memory _nombre, uint256 _level, uint256 _rareza) public onlyOwner {
+    function mint(string memory _nombre, uint256 _level, uint256 _rareza) public onlyOwner {
 
         uint256 idPoster = _contadorId;
         uint256 precioCalculado = 0.001 ether * _level * _rareza;
 
         posters[idPoster] = Poster(idPoster, _nombre, _level, _rareza, precioCalculado);
 
-        // CORRECCIÓN: Se le mintea al address "_to", no al contrato (address(this))
-        _safeMint(_to, idPoster);
+        _safeMint(address(this), idPoster);
         _contadorId++;
     }
 
@@ -48,7 +46,6 @@ contract BallenitaNFT is ERC721, Ownable {
         Poster[] memory resultado = new Poster[](cantidadPosters);
         uint256 contador = 0;
 
-        // CORRECCIÓN: El tokenId debe empezar en 1, de lo contrario ownerOf(0) dará Revert.
         for(uint256 tokenId = 1; tokenId < _contadorId; tokenId++) {
             
             if(ownerOf(tokenId) == propietario) {
